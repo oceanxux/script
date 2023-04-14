@@ -14,9 +14,9 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 env_key = "MAOTAI_CONFIG"
 res_map = {
-    # '10213': '贵州茅台酒（癸卯兔年）',
+     '10213': '贵州茅台酒（癸卯兔年）',
     # '10056': '茅台1935',
-    '2478': '贵州茅台酒（珍品）',
+    # '2478': '贵州茅台酒（珍品）',
     '10214': '贵州茅台酒（癸卯兔年）2'
 }
 mt_r = 'clips_OlU6TmFRag5rCXwbNAQ/Tz1SKlN8THcecBp/HGhHdw=='
