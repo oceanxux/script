@@ -1,10 +1,11 @@
+# new Env("MT任务")
+# cron 23 9 * * *
+
 import datetime
 import logging
 import os
 import random
 
-# new Env("MT任务")
-# cron 23 9 * * *
 import time
 import sys
 import traceback
