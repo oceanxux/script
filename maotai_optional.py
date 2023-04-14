@@ -2,6 +2,9 @@ import datetime
 import logging
 import os
 import random
+
+# new Env("MT任务")
+# cron 23 9 * * *
 import time
 import sys
 import traceback
@@ -9,8 +12,6 @@ import traceback
 import requests
 import base64
 import json
-
-cron: 23 9 * * * */
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 
