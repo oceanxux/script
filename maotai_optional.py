@@ -10,6 +10,8 @@ import requests
 import base64
 import json
 
+cron: 23 9 * * * */
+
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 env_key = "MAOTAI_CONFIG"
