@@ -133,10 +133,7 @@ class TiebaSign:
 
 if __name__ == "__main__":
     # 获取贴吧的cookie
-    tieba_cookies = [
-        os.environ.get("tieba_COOKIE")
-        # ... 可以继续添加
-    ]
+    tieba_cookie = os.environ.get("tieba_COOKIE")
 
     # 执行贴吧签到脚本
     tieba_sign = TiebaSign(tieba_cookie=tieba_cookie)
