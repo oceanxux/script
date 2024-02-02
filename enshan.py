@@ -1,3 +1,5 @@
+# new Env("恩山无线签到")
+# cron 5 9 11 ? * *
 import requests
 from lxml import etree
 import os
