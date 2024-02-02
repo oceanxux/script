@@ -87,7 +87,7 @@ def sign_in():
     
     try:
         if notify:
-            notify.send("恩山论坛签到", result_msg)
+            notify.send("铁子今日恩山论坛开始签到", result_msg)
     except NameError:
         pass
 
