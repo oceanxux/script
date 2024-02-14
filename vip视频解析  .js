@@ -174,6 +174,55 @@ function createSelect(apis) {
     document.body.appendChild(myul);
 }
 
+
+// 添加链接并创建视频播放器
+function createSelect(apis) {
+    var myul = document.createElement("ul");
+    myul.id = "myul";
+    myul.setAttribute("style",
+        "display:none;background:#fff;box-shadow:0px 1px 10px rgba(0,0,0,0.3);margin:0;padding:0 4.2vw;position:fixed;bottom:17vh;right:6vw;z-index:99999;height:70vh;overflow:scroll;border-radius:1.26vw;");
+    for (var i = 0; i < apis.length; i++) {
+        var myli = document.createElement("li");
+        var that = this;
+        myli.setAttribute("style",
+            "margin:0;padding:0;display:block;list-style:none;font-size:4.2vw;width:30.6vw;text-align:left;line-height:12.6vw;letter-spacing:0;border-bottom:1px solid #f0f0f0;position:relative;overflow:hidden;text-overflow:hidden;white-space:nowrap;");
+        (function (num) {
+            myli.onclick = function () {
+                // 获取视频链接
+                var videoUrl = apis[num].url + location.href;
+                // 创建 video 元素
+                var video = document.createElement('video');
+                video.controls = true; // 显示控制条
+                video.style.width = '100%'; // 设置视频宽度
+                video.style.height = 'auto'; // 设置视频高度自适应
+                // 创建 source 元素
+                var source = document.createElement('source');
+                source.src = videoUrl; // 设置视频链接
+                source.type = 'video/mp4'; // 视频类型为 mp4
+                // 将 source 添加到 video 中
+                video.appendChild(source);
+                // 将 video 添加到页面中的某个元素中（例如 id 为 "video-container" 的 div 元素）
+                document.getElementById('video-container').innerHTML = ''; // 清空原有的内容
+                document.getElementById('video-container').appendChild(video); // 添加视频播放器
+            };
+            myli.ontouchstart = function () {
+                this.style.cssText += "color:yellow;background:#373737;border-radius:1.26vw;";
+            };
+            myli.ontouchend = function () {
+                this.style.cssText += "color:black;background:transparent;border-radius:0;";
+            };
+        })(i);
+        myli.innerHTML = apis[i].name;
+        myul.appendChild(myli);
+    }
+    document.body.appendChild(myul);
+}
+
+// 调用 createMenu 函数
+createMenu();
+// 调用 createSelect 函数
+createSelect(apis);
+
 // 唤出菜单
 function createMenu() {
     var myBtn = document.createElement("div");
