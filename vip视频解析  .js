@@ -1,22 +1,19 @@
-vip视频解析 （自己改版）1.1
+// ==UserScript==
+// @name        vip视频解析 
+// @namespace    ocean
+// @version      
+// @description  苹果Alook浏览器使用此脚本方法:点击安装此脚本后可见完整代码，全选复制备用，之后进设置/自定义设置/JavaScript扩展/添加/被动扩展，名称随意填写，将匹配类型修改为_链接网址，匹配值_*，运行时间不动。最后将代码完整的粘贴到JavaScript代码框内，保存后生效。解析接口失效后请自行到其他脚本内提取替换更新，遇到页面无法启动脚本时请自行增减域名。更新代码时切记:字符均为半角，编码格式为utf-8 切记!!!
+// @include *
+// @author       ocean
+// @downloadURL =
+// ==/UserScript==
 
-/*
-1.1 test
-示例 ：
-var apis = [{
-        name: 通用 + 点击名称 + "解析口名称",
-        url: "解析口?url=",
-        title: "自定义显示"
-    }];
-*/
-
+//正文开始
 var 通用 =
-    '<span style="display:block;float:left;width:5vw;height:5vw;font-size:2.5vw;color:#fff;line-height:5vw;text-align:center;border-radius:100%;box-shadow:0px 0px 3px #a9a9a9;background:#224E95;margin:1vw 1vw;">腾讯</span>'
-*/
-/*
-关于：CSS border边框属性教程(color style) - DIVCSS5
-http://www.divcss5.com/rumen/r120.shtml
-*/
+    '<span style="display:block;float:left;width:5vw;height:5vw;font-size:2.5vw;color:#fff;line-height:5vw;text-align:center;border-radius:100%;box-shadow:0px 0px 3px #a9a9a9;background:transparent;margin:3.78vw 2.1vw;">&#9660</span>'
+
+
+//综合解析下面的链接就是接口，替换时注意不要将""删掉
 
 var apis = [{
     name: 通用 + "水星",
@@ -148,6 +145,7 @@ var apis = [{
     "title": "非凡"
   }];
 
+
 //添加链接
 
 function createSelect(apis) {
@@ -159,7 +157,7 @@ function createSelect(apis) {
         var myli = document.createElement("li");
         var that = this;
         myli.setAttribute("style",
-            "margin:0;padding:0;display:block;list-style:none;font-size:3.5vw;color:#000000;width:30.6vw;text-align:left;line-height:7.1vw;letter-spacing:0;border-bottom:1px solid #f0f0f0;position:relative;overflow:hidden;text-overflow:hidden;white-space:nowrap;");
+            "margin:0;padding:0;display:block;list-style:none;font-size:4.2vw;width:30.6vw;text-align:left;line-height:12.6vw;letter-spacing:0;border-bottom:1px solid #f0f0f0;position:relative;overflow:hidden;text-overflow:hidden;white-space:nowrap;");
         (function (num) {
             myli.onclick = function () {
                 window.open(apis[num].url + location.href, '_blank');
@@ -182,19 +180,9 @@ function createSelect(apis) {
 function createMenu() {
     var myBtn = document.createElement("div");
     myBtn.id = "myBtn";
-    myBtn.innerHTML = "";
-/*
-    myBtn1.innerHTML = "↯";
-    myBtn1.innerHTML = "✿";
-    myBtn1.innerHTML = "✯";
-    myBtn1.innerHTML = "❁";
-    myBtn1.innerHTML = "Ⓓ";
-    myBtn1.innerHTML = "♛";
-    myBtn1.innerHTML = "⇊";
-    myBtn1.innerHTML = "㊦";
-*/
+    myBtn.innerHTML = "&#9855";
     myBtn.setAttribute("style",
-     "width:10vw;height:10vw;position:fixed;bottom:10vh;right:6vw;z-index:100000;border-radius:100%;text-align:center;line-height:10vw;box-shadow:0px 1px 10px rgba(0,0,0,0.3);font-size:6vw;color:#000000;background:#fff;");
+     "width:10vw;height:10vw;position:fixed;bottom:10vh;right:6vw;z-index:100000;border-radius:100%;text-align:center;line-height:10vw;box-shadow:0px 1px 10px rgba(0,0,0,0.3);font-size:6vw;background:#fff;");
     myBtn.onclick = function () {
         var myul = document.getElementById("myul");
         if (myul.style.display == "none") {
@@ -208,16 +196,17 @@ function createMenu() {
     document.body.appendChild(myBtn);
 }
 /*document.addEventListener("DOMContentLoaded",function () {
-	createMenu();
-	createSelect(apis);
+    createMenu();
+    createSelect(apis);
 });*/
+//解析域名，填减时注意格式
 if (location.href.match(".iqiyi.com") || location.href.match(".youku.com") || location.href.match(".le.com") ||
     location.href.match(".letv.com") || location.href.match("v.qq.com") || location.href.match("film.qq.com") || location.href.match(".tudou.com") ||
     location.href.match(".mgtv.com") || location.href.match("film.sohu.com") || location.href.match("tv.sohu.com") ||
     location.href.match(".acfun.cn") || location.href.match(".bilibili.com") || location.href.match(".pptv.com") ||
     location.href.match("vip.1905.com") || location.href.match(".yinyuetai.com") || location.href.match(".fun.tv") ||
-    location.href.match(".56.com") || 
-location.href.match(".wasu.cn")) {
+    location.href.match("twitter.com") || location.href.match("facebook.com") || location.href.match("instagram.com") ||
+    location.href.match(".56.com") || location.href.match("youtube.com") || location.href.match(".wasu.cn")) {
     createMenu();
     createSelect(apis);
 }
