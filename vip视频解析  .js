@@ -8,10 +8,12 @@
 // @downloadURL =
 // ==/UserScript==
 
-//正文开始
+/ 正文开始
 var 通用 =
-    '<span style="display:block;float:left;width:5vw;height:5vw;font-size:2.5vw;color:#fff;line-height:5vw;text-align:center;border-radius:100%;box-shadow:0px 0px 3px #a9a9a9;background:transparent;margin:3.78vw 2.1vw;">&#9660</span>'
+    '<span style="display:block;float:left;width:5vw;height:5vw;font-size:2.5vw;color:#fff;line-height:5vw;text-align:center;border-radius:100%;box-shadow:0px 0px 3px #a9a9a9;background:transparent;margin:3.78vw 2.1vw;">&#9660</span>';
 
+// 播放器链接
+var playerUrl = "https://v2.shenjw.com:4438/wap.php?url=";
 
 //综合解析下面的链接就是接口，替换时注意不要将""删掉
 
