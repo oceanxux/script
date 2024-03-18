@@ -1,4 +1,4 @@
-# 20 15 * * *
+# cron 29 14 * * *
 import requests
 import os
 import re
