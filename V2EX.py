@@ -1,3 +1,4 @@
+# 20 15 * * *
 import requests
 import os
 import re
@@ -5,6 +6,7 @@ from notify import send
 
 class V2ex:
     name = "V2EX 论坛签到"
+
 
     def __init__(self, check_item):
         self.check_item = check_item
