@@ -1,5 +1,6 @@
 # new Env("贴吧签到")
-# cron 2 6 15 ? * *
+# cron 29 14 * * *
+
 import requests
 import json
 import os
