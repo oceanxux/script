@@ -1,5 +1,7 @@
-# new Env("恩山无线签到")
-# cron 3 10 * * *
+"""
+cron: 2 50 9 ? * *
+new Env('恩山论坛签到');
+"""
 import requests
 from lxml import etree
 import os
