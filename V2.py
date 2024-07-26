@@ -1,4 +1,7 @@
-# cron 29 14 * * *
+"""
+cron: 21 34 09 ? * *
+new Env('V2EX论坛签到');
+"""
 import requests
 import os
 import re
