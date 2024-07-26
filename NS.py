@@ -1,6 +1,6 @@
 # -- coding: utf-8 --
 """
-cron: 21 0 11 ? * *
+cron: 21 25 11 ? * *
 new Env('ns论坛签到');
 """
 import os
