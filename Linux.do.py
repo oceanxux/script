@@ -35,11 +35,11 @@ console_handler.setFormatter(formatter)
 logger.addHandler(console_handler)
 
 USERNAME = [
-    os.getenv("LINUXDO_USERNAME_1"),
+    os.getenv("LINUXDO_USERNAME"),
     os.getenv("LINUXDO_USERNAME_2").splitlines()
 ]
 PASSWORD = [
-    os.getenv("LINUXDO_PASSWORD_1"),
+    os.getenv("LINUXDO_PASSWORD"),
     os.getenv("LINUXDO_PASSWORD_2").splitlines()
 ]
 #USERNAME = os.getenv("LINUXDO_USERNAME").splitlines()
