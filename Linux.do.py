@@ -35,7 +35,7 @@ logger.addHandler(console_handler)
 
 USERNAME = os.getenv("LINUXDO_USERNAME").splitlines()
 PASSWORD = os.getenv("LINUXDO_PASSWORD").splitlines()
-SCROLL_DURATION = int(os.getenv("SCROLL_DURATION", 0))
+SCROLL_DURATION = int(os.getenv("SCROLL_DURATION", 5))
 VIEW_COUNT = int(os.getenv("VIEW_COUNT", 1000))
 HOME_URL = os.getenv("HOME_URL", "https://linux.do/")
 CONNECT_URL = os.getenv("CONNECT_URL", "https://connect.linux.do/")
