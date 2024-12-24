@@ -1,6 +1,6 @@
 # -- coding: utf-8 --
 """
-cron: 21 25 17 ? * *
+cron: 0 15 */7 * *
 new Env('Serv007 保活脚本');
 """
 import os
