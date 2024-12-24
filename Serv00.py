@@ -50,7 +50,7 @@ def try_ssh_connection(server, username, password, label):
 
     # 使用 notify.py 发送消息
     try:
-        notify.send("SSH 保活通知", message)
+        notify.send("SSH S7 保活通知", message)
     except Exception as e:
         print(f"错误：通知发送失败：{e}")
     print("通知已处理。")
