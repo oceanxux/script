@@ -402,27 +402,57 @@
             setTimeout(() => setWrapperBtn.innerHTML = '若未生效，可能区域过小📍点击重选', 3000);
             window.addEventListener('mousedown', setWrapper);
         })
-        function updateView(curAccessPoint) {
+        async function updateView(curAccessPoint) {
             let iframe = document.querySelector('#fatcat_video_vip_iframe');
             if (!iframe) return true;
-            let src = curAccessPoint ? curAccessPoint.url + window.location.href : '';
-            aTag.href = src;
-            if (iframe.src != src) {
-                iframe.src = src;
-                return true;
+
+            // 处理JSON格式的解析接口
+            const jsonApis = ["火花解析", "熊二解析"]; 
+            
+            if (jsonApis.includes(curAccessPoint.name)) {
+                try {
+                    // 获取JSON响应
+                    const response = await fetch(curAccessPoint.url + window.location.href);
+                    const data = await response.json();
+                    
+                    // 检查返回状态和URL
+                    if (data.code === "200" && data.url) {
+                        // 使用播放器播放解析到的地址
+                        const playerUrl = "https://www.playm3u8.cn/player.html?url=" + encodeURIComponent(data.url);
+                        if (iframe.src !== playerUrl) {
+                            iframe.src = playerUrl;
+                            return true;
+                        }
+                    }
+                } catch (error) {
+                    console.error(`${curAccessPoint.name}解析失败:`, error);
+                    // 解析失败时使用备用解析接口
+                    const backupUrl = "https://jx.xmflv.com/?url=" + window.location.href;
+                    if (iframe.src !== backupUrl) {
+                        iframe.src = backupUrl;
+                        return true;
+                    }
+                }
+            } else {
+                // 非JSON接口使用原来的方式
+                let src = curAccessPoint ? curAccessPoint.url + window.location.href : '';
+                if (iframe.src !== src) {
+                    iframe.src = src;
+                    return true;
+                }
             }
         }
         window.addEventListener('mousedown', async (e) => {
             if (!(e.target.matches("#fatcat_video_vip *") || e.target.matches("#fatcat_video_vip_iframe"))) {
                 let curAccessPoint = await getUserConfig('curAccessPoint');
-                useInterval(() => updateView(curAccessPoint), 100, 10000);
+                useInterval(async () => await updateView(curAccessPoint), 100, 10000);
             }
         });
         selects.onchange = async () => {
             let accessPoints = await getUserConfig('accessPoints');
-            let curAccessPoint = accessPoints.find(({ url }) => url == selects.value)
+            let curAccessPoint = accessPoints.find(({ url }) => url == selects.value);
             await setUserConfig('curAccessPoint', curAccessPoint);
-            updateView(curAccessPoint);
+            await updateView(curAccessPoint);
         };
         document.body.appendChild(wrapper);
     }
