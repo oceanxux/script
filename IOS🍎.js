@@ -97,13 +97,107 @@
     }
     async function createVideoFrame(videoWrapper, curAccessPoint) {
         videoWrapper.style.overflow = 'hidden';
-        if (window.getComputedStyle(videoWrapper).position == 'static') videoWrapper.style.position = 'relative';
+        if (window.getComputedStyle(videoWrapper).position == 'static') {
+            videoWrapper.style.position = 'relative';
+        }
+        
+        // 清除可能存在的旧播放器
+        const oldPlayer = document.querySelector('#fatcat_video_vip_iframe');
+        if (oldPlayer) {
+            oldPlayer.parentElement.remove();
+        }
+
         let iframeWrapper = document.createElement('div');
-        iframeWrapper.innerHTML = `<iframe src="${curAccessPoint ? curAccessPoint.url + window.location.href : ''}" width="100%" height="100%" allowfullscreen id="fatcat_video_vip_iframe" style="border:none;"/>`;
-        iframeWrapper.style = `position:absolute; inset:0; z-index: 99999999;`
+        
+        // 处理火花解析的特殊情况
+        if (curAccessPoint.name === "火花解析") {
+            try {
+                const response = await fetch(curAccessPoint.url + window.location.href);
+                const data = await response.json();
+                if (data.code === "200" && data.url) {
+                    // 创建视频播放器
+                    iframeWrapper.innerHTML = `
+                        <video 
+                            id="fatcat_video_vip_iframe"
+                            src="${data.url}"
+                            controls
+                            autoplay
+                            style="
+                                width: 100%;
+                                height: 100%;
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                z-index: 99999999;
+                            "
+                        ></video>
+                    `;
+                } else {
+                    throw new Error('解析失败');
+                }
+            } catch (error) {
+                console.error('火花解析失败:', error);
+                // 失败时使用备用播放器
+                iframeWrapper.innerHTML = `
+                    <iframe 
+                        src="https://jx.xmflv.com/?url=${window.location.href}" 
+                        width="100%" 
+                        height="100%" 
+                        allowfullscreen 
+                        id="fatcat_video_vip_iframe" 
+                        style="
+                            border: none;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            z-index: 99999999;
+                        "
+                    ></iframe>
+                `;
+            }
+        } else {
+            // 其他解析接口使用原来的方式
+            iframeWrapper.innerHTML = `
+                <iframe 
+                    src="${curAccessPoint ? curAccessPoint.url + window.location.href : ''}" 
+                    width="100%" 
+                    height="100%" 
+                    allowfullscreen 
+                    id="fatcat_video_vip_iframe" 
+                    style="
+                        border: none;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: 99999999;
+                    "
+                ></iframe>
+            `;
+        }
+
+        iframeWrapper.style = `
+            position: absolute;
+            inset: 0;
+            z-index: 99999999;
+            background: #000;
+        `;
+        
         videoWrapper.appendChild(iframeWrapper);
-        Array.from(videoWrapper.children).forEach(el => { if (el != iframeWrapper) el.style.visibility = 'hidden' })
-        return;
+        
+        // 隐藏其他视频元素
+        Array.from(videoWrapper.children).forEach(el => {
+            if (el !== iframeWrapper) {
+                el.style.visibility = 'hidden';
+                if (el.tagName === 'VIDEO') {
+                    el.pause();
+                    el.src = '';
+                }
+            }
+        });
     }
     async function createMenu(accessPoints, curAccessPoint) {
         if (document.querySelector('#fatcat_video_vip')) return;
