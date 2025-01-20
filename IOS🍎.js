@@ -109,35 +109,44 @@
 
         let iframeWrapper = document.createElement('div');
         
-        // 处理火花解析的特殊情况
-        if (curAccessPoint.name === "火花解析") {
+        // 处理JSON格式的解析接口
+        const jsonApis = ["火花解析", "熊二解析"]; // 添加所有返回JSON的接口名称
+        
+        if (jsonApis.includes(curAccessPoint.name)) {
             try {
+                // 获取JSON响应
                 const response = await fetch(curAccessPoint.url + window.location.href);
                 const data = await response.json();
+                
+                // 检查返回状态和URL
                 if (data.code === "200" && data.url) {
-                    // 创建视频播放器
+                    // 使用播放器播放解析到的地址
+                    const playerUrl = "https://www.playm3u8.cn/player.html?url=" + encodeURIComponent(data.url);
+                    
                     iframeWrapper.innerHTML = `
-                        <video 
-                            id="fatcat_video_vip_iframe"
-                            src="${data.url}"
-                            controls
-                            autoplay
+                        <iframe 
+                            src="${playerUrl}"
+                            width="100%" 
+                            height="100%" 
+                            allowfullscreen 
+                            id="fatcat_video_vip_iframe" 
                             style="
-                                width: 100%;
-                                height: 100%;
+                                border: none;
                                 position: absolute;
                                 top: 0;
                                 left: 0;
+                                width: 100%;
+                                height: 100%;
                                 z-index: 99999999;
                             "
-                        ></video>
+                        ></iframe>
                     `;
                 } else {
-                    throw new Error('解析失败');
+                    throw new Error('解析失败或未获取到播放地址');
                 }
             } catch (error) {
-                console.error('火花解析失败:', error);
-                // 失败时使用备用播放器
+                console.error(`${curAccessPoint.name}解析失败:`, error);
+                // 解析失败时使用备用解析接口
                 iframeWrapper.innerHTML = `
                     <iframe 
                         src="https://jx.xmflv.com/?url=${window.location.href}" 
