@@ -30,6 +30,53 @@
         { name: "火花解析", "url": "https://api.huohua.live/api/?key=m5CK267ypabEU1jBNS&url=" },
     ];
 
+    // 添加查找视频元素的函数
+    function findVideoElement() {
+        const selectors = [
+            'video',                          // 标准video标签
+            '#player',                        // 通用播放器ID
+            '.video-player',                  // 通用播放器类名
+            '#youku-player',                  // 优酷
+            '#iqiyi-player',                 // 爱奇艺
+            '#video-player',                  // 通用
+            '.bilibili-player-video'          // B站
+        ];
+        
+        for (let selector of selectors) {
+            const element = document.querySelector(selector);
+            if (element) return element;
+        }
+        return null;
+    }
+
+    // 创建播放器
+    function createPlayer(url) {
+        const videoWrapper = document.createElement('div');
+        videoWrapper.id = 'vip-video-player';
+        videoWrapper.innerHTML = `
+            <iframe 
+                src="${url}"
+                style="
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: 999999;
+                "
+                allowfullscreen
+            ></iframe>
+        `;
+        videoWrapper.style = `
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        `;
+        return videoWrapper;
+    }
+
     // 创建悬浮按钮
     function createFloatingButton() {
         const btn = document.createElement('div');
@@ -92,11 +139,35 @@
         
         document.body.appendChild(dialog);
         
-        // 绑定点击事件
+        // 修改点击事件处理
         dialog.querySelectorAll('.parse-item').forEach(item => {
             item.onclick = function() {
                 const url = this.dataset.url + location.href;
-                window.open(url, '_blank');
+                const videoElement = findVideoElement();
+                
+                if (videoElement) {
+                    // 保存原始视频元素的尺寸
+                    const rect = videoElement.getBoundingClientRect();
+                    const player = createPlayer(url);
+                    
+                    // 设置播放器尺寸
+                    player.style.width = rect.width + 'px';
+                    player.style.height = rect.height + 'px';
+                    
+                    // 替换原视频元素
+                    videoElement.style.display = 'none';
+                    videoElement.parentNode.insertBefore(player, videoElement);
+                    
+                    // 停止原视频播放
+                    if (videoElement.tagName === 'VIDEO') {
+                        videoElement.pause();
+                        videoElement.src = '';
+                    }
+                } else {
+                    alert('未找到视频元素，将在新窗口打开');
+                    window.open(url, '_blank');
+                }
+                
                 dialog.remove();
             };
         });
@@ -109,6 +180,22 @@
             }
         });
     }
+
+    // 添加样式
+    const style = document.createElement('style');
+    style.textContent = `
+        #vip-video-player {
+            background: #000;
+            position: relative;
+            z-index: 999999;
+        }
+        #vip-video-player iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
+        }
+    `;
+    document.head.appendChild(style);
 
     // 等待页面加载完成后初始化
     if (document.readyState === 'loading') {
