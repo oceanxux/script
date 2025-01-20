@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name        🌀VIP视频解析——fatcat
+// @name        🌀VIP视频解析
 // @namespace   https://greasyfork.org/users/1313123-fei-miao
 // @version     2.9.3
 // @description 适配手机端与电脑端，可自定义解析网址
