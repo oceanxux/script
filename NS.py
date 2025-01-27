@@ -7,29 +7,27 @@ import os
 import sys
 from curl_cffi import requests
 
-NS_RANDOM = os.environ.get("NS_RANDOM", "false")
-NS_COOKIE = os.environ.get("NS_COOKIE", "")
+NS_RANDOM = os.environ.get("NS_RANDOM","true")
+NS_COOKIE = os.environ.get("NS_COOKIE","")
 COOKIE = os.environ.get("COOKIE", "")
 COOKIE_ENV = NS_COOKIE or COOKIE
 
 pushplus_token = os.environ.get("PUSHPLUS_TOKEN")
-telegram_bot_token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-chat_id = os.environ.get("CHAT_ID", "")
-telegram_api_url = os.environ.get("TELEGRAM_API_URL", "https://api.telegram.org")  # 代理api,可以使用自己的反代
-
-
-def telegram_Bot(token, chat_id, message):
+telegram_bot_token = os.environ.get("TELEGRAM_BOT_TOKEN","")
+chat_id = os.environ.get("CHAT_ID","")
+thread_id = os.environ.get("THREAD_ID","")
+telegram_api_url = os.environ.get("TELEGRAM_API_URL","https://api.telegram.org") # 代理api,可以使用自己的反代
+def telegram_Bot(token,chat_id,message):
     url = f'{telegram_api_url}/bot{token}/sendMessage'
     data = {
         'chat_id': chat_id,
+        'message_thread_id': thread_id,
         'text': message
     }
     r = requests.post(url, json=data)
     response_data = r.json()
     msg = response_data['ok']
     print(f"telegram推送结果：{msg}\n")
-
-
 def pushplus_ts(token, rw, msg):
     url = 'https://www.pushplus.plus/send/'
     data = {
@@ -41,7 +39,6 @@ def pushplus_ts(token, rw, msg):
     msg = r.json().get('msg', None)
     print(f'pushplus推送结果：{msg}\n')
 
-
 def load_send():
     global send
     global hadsend
@@ -50,15 +47,13 @@ def load_send():
     if os.path.exists(cur_path + "/notify.py"):
         try:
             from notify import send
-            hadsend = True
+            hadsend=True
         except:
             print("加载notify.py的通知服务失败，请检查~")
-            hadsend = False
+            hadsend=False
     else:
         print("加载通知服务失败,缺少notify.py文件")
-        hadsend = False
-
-
+        hadsend=False
 load_send()
 
 if COOKIE_ENV:
@@ -78,9 +73,10 @@ if COOKIE_ENV:
     }
 
     try:
-        response = requests.post(url, headers=headers, impersonate="chrome110")
+        response = requests.post(url, headers=headers,impersonate="chrome110")
         response_data = response.json()
-        print(response_data)  # 仅输出接口返回的数据
+        print(response_data)
+        print(COOKIE_ENV)
         message = response_data.get('message')
         success = response_data.get('success')
         send("nodeseek签到", message)
